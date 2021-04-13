@@ -1,0 +1,20 @@
+https://stackoverflow.com/questions/17996414/data-structure-for-subsequence-queries
+
+https://en.wikipedia.org/wiki/Trie
+https://en.wikipedia.org/wiki/String-searching_algorithm
+
+A little more general problem:
+https://www.geeksforgeeks.org/find-largest-word-dictionary-deleting-characters-given-string/
+https://stackoverflow.com/questions/40158882/find-longest-subsequence-s-of-string-in-a-dictionary
+https://stackoverflow.com/questions/40158882/find-longest-subsequence-s-of-string-in-a-dictionary#40172679
+
+Smaller subproblem (check if s1 is substring of s2):
+https://www.geeksforgeeks.org/given-two-strings-find-first-string-subsequence-second/
+
+
+Kind of related:
+https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
+https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm
+
+Other:
+https://stackoverflow.com/questions/3673434/find-subsequences-of-strings-within-strings

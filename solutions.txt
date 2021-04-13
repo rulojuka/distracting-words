@@ -1,0 +1,46 @@
+There are two problems in one:
+- The one with subsequences
+- The one with exact matching
+
+Exact matching is trivial (optimal for constant time and linear space using a hash)
+All solutions here refer to the problem involving subsequences.
+
+isSubsequence(s1,s2): simplest subproblem. given s1 and s2, return if s1 is a subsequence of s2.
+
+  - Maintain a pointer p1 to the first char of s1 that was not found on s2 yet. (start at s1[0])
+  - for each char p2 of s2
+    - if( p1 == p2 )
+      - increase p1
+    - if p1 reached the end of s1, return true
+  - return false
+
+  - This is done in linear time O(n+m) where n and m are the sizes of the strings
+
+The problem:
+  Given a set of strings A and a query string q return if isSubsequence(s,q) is true for any s ∈ A
+
+We will call:
+  N - the size of q
+  M - the combined size of all A strings
+  k - the number of elements in set A
+
+Algorithm 0:
+  Just call isSubsequence(s,q) for all s ∈ A.
+  Time complexity: O(N*M)
+  Size complexity: O(N+M)
+
+Algorithm 1:
+  - for each element s in A
+    - initialize current[s] = 0
+    - initialize size[s] with size(s) // just making sure size[s] is a constant time operation
+  - for each char c in q
+    - for each element s in A
+      - if(c== s[current[s]])
+        - current[s]++;
+      - if(current[s] == size[s])
+        - return true;
+  - return false;
+  
+  Time complexity: O(N*K)
+  Space complexity: O(N+M)
+  
