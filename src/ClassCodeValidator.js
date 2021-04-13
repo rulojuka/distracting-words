@@ -1,12 +1,17 @@
 // - code should be a string
 // - distracting_words should be an array of strings
 // - existing_codes should be an object that returns undefined for existing_codes[code]
-// iff code is a non-existing code
+// if and only if code is a non-existing code
 const codeDoesNotExistAndIsNotDistracting = (
   code,
   distracting_words,
   existing_codes
 ) => {
+  // These invalid cases should throw exceptions
+  if (!(typeof code === 'string')) return false
+  if (!(distracting_words instanceof Array)) return false
+  if (!(existing_codes instanceof Object)) return false
+
   return (
     codeDoesNotExist(code, existing_codes) &&
     codeIsNotDistracting(code, distracting_words)

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import codeDoesNotExistAndIsNotDistracting from '../src/DistractingWordsService.js'
+import codeDoesNotExistAndIsNotDistracting from '../../src/ClassCodeValidator.js'
 
 const createHashTable = (existingCodes) => {
   const hashTable = {}
@@ -148,7 +148,7 @@ const test = (
 }
 
 const testWithDefaultValues = (possibleDistractingWords) => {
-  const CODE_SIZE = 10 // This should be greater or equal than MAXIMUM_DISTRACTING_WORD_SIZE
+  const CODE_SIZE = 7 // This should be greater or equal than MAXIMUM_DISTRACTING_WORD_SIZE
   const REPEAT_DICTIONARY_TIMES = 1
   const TOTAL_NUMBER_OF_EXISTING_RANDOM_CODES = 1000000
   const TOTAL_NUMBER_OF_TEST_RANDOM_CODES = 1000
