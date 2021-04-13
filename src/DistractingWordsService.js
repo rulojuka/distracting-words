@@ -33,4 +33,5 @@ const isSubsequence = (str1, str2) => {
   return false
 }
 
-export default { codeDoesNotExistAndIsNotDistracting }
+export { isSubsequence, codeDoesNotExist, codeIsNotDistracting }
+export default codeDoesNotExistAndIsNotDistracting
