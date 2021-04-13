@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
 import assert from "assert"
+import DistractingWordsService from './src/DistractingWordsService.js'
 
 async function fetchDictionary(URL){
   let dictionary
@@ -16,19 +17,6 @@ async function fetchDictionary(URL){
 
 function dictionaryToUpperCase(dictionary){
   return dictionary.map(word => word.toUpperCase());
-}
-
-function isSubsequence(str1, str2){
-  let index1 = 0
-  for (let index2 = 0; index2 < str2.length; index2++) {
-    if(str1[index1]===str2[index2]){
-      index1++
-    }
-    if(index1 === str1.length){
-      return true
-    }
-  }
-  return false
 }
 
 function testIsSubsequence(){
@@ -119,63 +107,6 @@ function createSubsequenceCodes(codeSize, numberOfCodes, possibleDistractingWord
   return subsequenceCodes
 }
 
-// The problem:
-//   Given a set of strings 'distracting_words' and a query string 'code' return
-//   if 'isSubsequence(word,code)' is true for any 'word' ∈ 'distracting_words'
-
-// We will call:
-//   N - the size of q
-//   M - the combined size of all A strings
-//   k - the number of elements in set A
-
-// This function is O(N*M)
-// This function is very straightforward
-function myFunctionZero(code, distracting_words, existing_codes){
-
-  if(existing_codes[code]!=undefined){
-    return false
-  }
-
-  let hasDistractingWordSubsequence = false;
-  distracting_words.forEach(distractingWord => {
-    if(isSubsequence(distractingWord,code)){
-      hasDistractingWordSubsequence = true;
-      // console.log("distracting word: ", distractingWord + "\ncode: ", code);
-    }
-  });
-
-  return !hasDistractingWordSubsequence;
-}
-
-// This function is O(N*K)
-function myFunctionOne(code, distracting_words, existing_codes){
-
-  if(existing_codes[code]!=undefined){
-    return false
-  }
-
-  const current = []
-  const size = []
-  for (let i = 0; i < distracting_words.length; i++) {
-    current.push(0)
-    size.push(distracting_words[i].length)
-  }
-
-  for (let i = 0; i < code.length; i++) {
-    const currentCodeChar = code[i];
-    for (let j = 0; j < distracting_words.length; j++) {
-      if(currentCodeChar === distracting_words[j][current[j]]){
-        current[j]++;
-      }
-      if(current[j]===size[j]){
-        // console.log("distracting word: ", distracting_words[j] + "\ncode: ", code);
-        return false; // Found a subsequence
-      }
-    }
-  }
-
-  return true;
-}
 
 const URL = 'https://gist.githubusercontent.com/dlants/d3b25b0f6c0bf8d023f65e86498bf9e6/raw/b310b5aff00f62f5073b3b8d366f5a639aa88ee3/3000-words.txt'
 const CODE_SIZE = 10
@@ -225,7 +156,7 @@ console.log("\n\n----Algorithm 0:----\n\n")
 console.log("Start testing with random codes")
 console.time('randomCodes')
 testRandomCodes.forEach(testRandomCode => {
-  const returnValue = myFunctionZero(testRandomCode, repeatedDistractingWords, hashTable)
+  const returnValue = DistractingWordsService.codeDoesNotExistAndIsNotDistracting(testRandomCode, repeatedDistractingWords, hashTable)
   assert(returnValue, "Failed on " + testRandomCode)
 })
 console.timeEnd('randomCodes')
@@ -235,30 +166,7 @@ console.log("Will now test codes with distracting words subsequence")
 
 console.time('subsequenceCodes')
 subsequenceCodes.forEach(subsequenceCode => {
-  const returnValue = myFunctionZero(subsequenceCode, repeatedDistractingWords, hashTable)
-  assert(!returnValue, "Failed on " + subsequenceCode)
-})
-console.timeEnd('subsequenceCodes')
-
-console.log("All subsequence passed as invalid")
-
-
-
-console.log("\n\n----Algorithm 1:----\n\n")
-console.log("Start testing with random codes")
-console.time('randomCodes')
-testRandomCodes.forEach(testRandomCode => {
-  const returnValue = myFunctionOne(testRandomCode, repeatedDistractingWords, hashTable)
-  assert(returnValue, "Failed on " + testRandomCode)
-})
-console.timeEnd('randomCodes')
-
-console.log("All random passed as valid")
-console.log("Will now test codes with distracting words subsequence")
-
-console.time('subsequenceCodes')
-subsequenceCodes.forEach(subsequenceCode => {
-  const returnValue = myFunctionOne(subsequenceCode, repeatedDistractingWords, hashTable)
+  const returnValue = DistractingWordsService.codeDoesNotExistAndIsNotDistracting(subsequenceCode, repeatedDistractingWords, hashTable)
   assert(!returnValue, "Failed on " + subsequenceCode)
 })
 console.timeEnd('subsequenceCodes')
