@@ -2,7 +2,8 @@ import assert from 'assert'
 import codeDoesNotExistAndIsNotDistracting, {
   isSubsequence,
   codeDoesNotExist,
-  codeIsNotDistracting
+  codeIsNotDistracting,
+  checkAndAdd
 } from '../../src/ClassCodeValidator.js'
 
 const nullString = null
@@ -164,6 +165,62 @@ const codeDoesNotExistAndIsNotDistractingShouldReturnFalseWhenGivenInvalidParame
   )
 }
 
+const checkAndAddShouldAddIfItIsValid = () => {
+  const distractingWords = ['CRASH', 'RATS', 'BURN']
+  const codeThatDoesNotExistAndIsNotADistraction = 'RXTV42'
+  const otherValidCode = 'RXTV43'
+  const existingCodes = {}
+
+  existingCodes[
+    codeThatDoesNotExistAndIsNotADistraction
+  ] = codeThatDoesNotExistAndIsNotADistraction
+
+  const response = checkAndAdd(otherValidCode, distractingWords, existingCodes)
+
+  assert(response.valid === true)
+  assert(response.existing_codes[otherValidCode] !== undefined)
+}
+
+const checkAndAddShouldNotAddIfItIsNotValid = () => {
+  const distractingWords = ['CRASH', 'RATS', 'BURN']
+  const existingCode = 'RXTV42'
+  const otherInvalidCode = 'RATS42'
+  const existingCodes = {}
+
+  existingCodes[existingCode] = existingCode
+
+  const response = checkAndAdd(
+    otherInvalidCode,
+    distractingWords,
+    existingCodes
+  )
+
+  assert(response.valid === false)
+  assert(response.existing_codes[otherInvalidCode] === undefined)
+}
+
+const checkAndAddShouldNotAddTheSameValidCodeTwice = () => {
+  const distractingWords = ['CRASH', 'RATS', 'BURN']
+  const existingCode = 'RXTV42'
+  const validCode = 'RXTV43'
+  const existingCodes = {}
+
+  existingCodes[existingCode] = existingCode
+
+  const response = checkAndAdd(validCode, distractingWords, existingCodes)
+
+  assert(response.valid === true)
+  assert(response.existing_codes[validCode] !== undefined)
+
+  const response2 = checkAndAdd(
+    validCode,
+    distractingWords,
+    response.existing_codes
+  )
+
+  assert(response2.valid === false)
+}
+
 const testAll = () => {
   isSubsequenceShouldReturnFalseWhenStr2IsFalsy()
   isSubsequenceShouldReturnTrueWhenStr1IsEmptyAndStr2IsNotFalsy()
@@ -181,6 +238,10 @@ const testAll = () => {
 
   codeDoesNotExistAndIsNotDistractingShouldReturnTrueOnlyWhenBothConditionsAreTrue()
   codeDoesNotExistAndIsNotDistractingShouldReturnFalseWhenGivenInvalidParameters()
+
+  checkAndAddShouldAddIfItIsValid()
+  checkAndAddShouldNotAddIfItIsNotValid()
+  checkAndAddShouldNotAddTheSameValidCodeTwice()
 }
 
 export default testAll

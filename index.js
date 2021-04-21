@@ -9,7 +9,7 @@ console.log('Fetching dictionary')
 const distractingWords = await getDictionary(URL)
 console.log('Dictionary fetched ')
 
-testWithDefaultValues(distractingWords)
+// testWithDefaultValues(distractingWords)
 
 console.log('Testing ClassCodeValidator')
 testAll()

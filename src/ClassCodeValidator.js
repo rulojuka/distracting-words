@@ -18,6 +18,23 @@ const codeDoesNotExistAndIsNotDistracting = (
   )
 }
 
+const checkAndAdd = (code, distracting_words, existing_codes) => {
+  const valid = codeDoesNotExistAndIsNotDistracting(
+    code,
+    distracting_words,
+    existing_codes
+  )
+  let newExistingCodes = {}
+  if (valid) {
+    newExistingCodes = { ...existing_codes }
+    newExistingCodes[code] = code
+  }
+  return {
+    valid,
+    existing_codes: newExistingCodes
+  }
+}
+
 const codeDoesNotExist = (code, existingCodes) => {
   return existingCodes[code] === undefined
 }
@@ -47,5 +64,5 @@ const isSubsequence = (str1, str2) => {
   return false
 }
 
-export { isSubsequence, codeDoesNotExist, codeIsNotDistracting }
+export { isSubsequence, codeDoesNotExist, codeIsNotDistracting, checkAndAdd }
 export default codeDoesNotExistAndIsNotDistracting
